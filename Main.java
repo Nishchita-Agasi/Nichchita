@@ -1,34 +1,86 @@
-package task2;
+package librarySystem;
 import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        StudentManager manager = new StudentManager();
-        int choice;
+        Library library = new Library();
+        Scanner scanner = new Scanner(System.in);
 
-        do {
-            System.out.println("\n===== Student Management System =====");
-            System.out.println("1. Add Student");
-            System.out.println("2. View All Students");
-            System.out.println("3. Update Student");
-            System.out.println("4. Delete Student");
-            System.out.println("5. Search Student");
-            System.out.println("6. Exit");
+        while (true) {
+            System.out.println("\n===== Library Management System =====");
+            System.out.println("1. Add Book");
+            System.out.println("2. Add User");
+            System.out.println("3. View Books");
+            System.out.println("4. View Users");
+            System.out.println("5. Issue Book");
+            System.out.println("6. Return Book");
+            System.out.println("7. Exit");
             System.out.print("Enter your choice: ");
-            choice = sc.nextInt();
 
-            switch (choice) {
-                case 1: manager.addStudent(); break;
-                case 2: manager.viewStudents(); break;
-                case 3: manager.updateStudent(); break;
-                case 4: manager.deleteStudent(); break;
-                case 5: manager.searchStudent(); break;
-                case 6: System.out.println("Exiting program..."); break;
-                default: System.out.println("Invalid choice!"); break;
+            // validate input
+            if (!scanner.hasNextInt()) {
+                System.out.println("Invalid input! Please enter a number.");
+                scanner.nextLine(); // clear invalid input
+                continue;
             }
 
-        } while (choice != 6);
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // consume newline
 
-        sc.close();
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Book ID: ");
+                    int bookId = scanner.nextInt();
+                    scanner.nextLine(); // consume newline
+
+                    System.out.print("Enter Book Title: ");
+                    String title = scanner.nextLine();
+
+                    System.out.print("Enter Book Author: ");
+                    String author = scanner.nextLine();
+
+                    library.addBook(new Book(bookId, title, author));
+                    break;
+
+                case 2:
+                    System.out.print("Enter User ID: ");
+                    int userId = scanner.nextInt();
+                    scanner.nextLine(); // consume newline
+
+                    System.out.print("Enter User Name: ");
+                    String name = scanner.nextLine();
+
+                    library.addUser(new User(userId, name));
+                    break;
+
+                case 3:
+                    library.viewBooks();
+                    break;
+
+                case 4:
+                    library.viewUsers();
+                    break;
+
+                case 5:
+                    System.out.print("Enter Book ID to issue: ");
+                    int issueId = scanner.nextInt();
+                    library.issueBook(issueId);
+                    break;
+
+                case 6:
+                    System.out.print("Enter Book ID to return: ");
+                    int returnId = scanner.nextInt();
+                    library.returnBook(returnId);
+                    break;
+
+                case 7:
+                    System.out.println("Exiting system. Goodbye!");
+                    scanner.close();
+                    System.exit(0);
+
+                default:
+                    System.out.println("Invalid choice! Please try again.");
+            }
+        }
     }
 }
